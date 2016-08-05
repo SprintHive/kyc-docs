@@ -1,0 +1,9 @@
+<div *ngIf="scannedDoc">
+  <single-doc-upload [documentRequest]="documentRequest" [application]="application"></single-doc-upload>
+</div>
+<div *ngIf="singleDoc">
+  <single-doc-upload [documentRequest]="documentRequest" [application]="application"></single-doc-upload>
+</div>
+<div *ngIf="multiDoc">
+  <multi-doc-upload [documentRequest]="documentRequest" [application]="application"></multi-doc-upload>
+</div>

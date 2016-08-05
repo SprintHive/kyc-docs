@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <span class="glyphicon glyphicon-cloud-upload upload-icon"></span>
+                <h2>Document Uploader</h2>
+                <h4>by SprintHive</h4>
+                <h5>{{mainMessage}}</h5>
+                <h6>{{secondaryMessage}}</h6>
+                <span class="loading" *ngIf="requesting">Searching</span>
+                <div *ngIf="errorMessage">
+                    Error: {{errorMessage}}
+                </div>
+                <br/>
+                <div *ngIf="application">
+                    <div *ngFor="let docReq of application.documentRequests" class="panel {{getButtonStyle(docReq)}} ">
+                        <div class="panel-heading">
+                            <span class="glyphicon left {{docReq.documentType.glyphicon}}" aria-hidden="true"></span>
+                            {{docReq.documentType.title}}
+                            <span class="glyphicon right {{getGlyphicon(docReq)}}" aria-hidden="true"></span>
+                        </div>
+                        <div class="panel-body">
+                            <upload-selector [documentRequest]="docReq" [application]="application"></upload-selector>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
