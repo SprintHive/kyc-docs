@@ -67,16 +67,6 @@ export class SingleDocUploadComponent implements OnInit {
 
     handleUpload(data:any):void {
         this.documentRequest.status = 'BUSY';
-        // for (var i = 0; i < this.application.documentRequests.length; i++) {
-        //     if(this.documentRequest.documentType.name === this.application.documentRequests[i].documentType.name){
-        //         this.application.documentRequests[i].status = 'BUSY';
-        //                 }
-        // }
-        for (var docRec of this.application.documentRequests){
-            if(this.documentRequest.documentType.name === docRec.documentType.name){
-                docRec.status = 'BUSY';
-            }
-        }
         this.uploadFile = data;
         console.log(this.uploadFile)
         this.zone.run(() => {

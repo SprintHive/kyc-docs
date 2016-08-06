@@ -63,17 +63,6 @@ var SingleDocUploadComponent = (function () {
     SingleDocUploadComponent.prototype.handleUpload = function (data) {
         var _this = this;
         this.documentRequest.status = 'BUSY';
-        // for (var i = 0; i < this.application.documentRequests.length; i++) {
-        //     if(this.documentRequest.documentType.name === this.application.documentRequests[i].documentType.name){
-        //         this.application.documentRequests[i].status = 'BUSY';
-        //                 }
-        // }
-        for (var _i = 0, _a = this.application.documentRequests; _i < _a.length; _i++) {
-            var docRec = _a[_i];
-            if (this.documentRequest.documentType.name === docRec.documentType.name) {
-                docRec.status = 'BUSY';
-            }
-        }
         this.uploadFile = data;
         console.log(this.uploadFile);
         this.zone.run(function () {
