@@ -39,18 +39,22 @@ export class SingleDocUploadComponent implements OnInit {
     }
 
     setStatus() {
-        if (this.documentRequest.fulfilled()) {
-            if (this.documentRequest.scannedBarcode != null) {
+        if (this.documentRequest.documentType.singlePage) {
+            if (this.documentRequest.fulfilled()) {
+                if (this.documentRequest.scannedBarcode != null) {
                     this.statusMessage = "Found: " + this.documentRequest.scannedBarcode;
-            } else {
-                if (this.documentRequest.documentType.barcodeScan) {
-                    this.statusMessage = "No barcode found in image.";
-                }else{
-                    this.statusMessage = "Document uploaded."
+                } else {
+                    if (this.documentRequest.documentType.barcodeScan) {
+                        this.statusMessage = "No barcode found in image.";
+                    } else {
+                        this.statusMessage = "Document uploaded."
+                    }
                 }
+            } else {
+                this.statusMessage = "Please provide your " + this.documentRequest.documentType.title;
             }
-        } else {
-            this.statusMessage = "Please provide your " + this.documentRequest.documentType.title;
+        }else{
+            this.statusMessage = this.documentRequest.documents.length + " documents uploaded.";
         }
     }
 
@@ -62,6 +66,17 @@ export class SingleDocUploadComponent implements OnInit {
     }
 
     handleUpload(data:any):void {
+        this.documentRequest.status = 'BUSY';
+        // for (var i = 0; i < this.application.documentRequests.length; i++) {
+        //     if(this.documentRequest.documentType.name === this.application.documentRequests[i].documentType.name){
+        //         this.application.documentRequests[i].status = 'BUSY';
+        //                 }
+        // }
+        for (var docRec of this.application.documentRequests){
+            if(this.documentRequest.documentType.name === docRec.documentType.name){
+                docRec.status = 'BUSY';
+            }
+        }
         this.uploadFile = data;
         console.log(this.uploadFile)
         this.zone.run(() => {
@@ -78,6 +93,53 @@ export class SingleDocUploadComponent implements OnInit {
             this.documentRequest = documentRequest;
             this.statusMessage = "Upload complete."
             this.clearStatus();
+        }
+    }
+
+    markAsDone(docRecTypeName: string) {
+        var id = this.application.id;
+        return this.applicationService.markAsDone(this.application, docRecTypeName)
+            .subscribe(
+                documentRequest => this.receiveDocumentRequest(documentRequest),
+                error => this.handleError(<any>error));
+    }
+
+    private receiveDocumentRequest(documentRequest:DocumentRequest) {
+        console.log('receiveDocumentRequest');
+        console.log(documentRequest);
+        documentRequest.fulfilled = this.documentRequest.fulfilled;
+        documentRequest.started = this.documentRequest.started;
+        this.documentRequest = documentRequest;
+        // location.reload();
+        return documentRequest;
+    }
+
+
+    private handleError(error:string) {
+        this.statusMessage = error;
+    }
+
+    showDone():boolean {
+        return this.documentRequest.status !== "COMPLETE"
+    }
+
+    getGlyphicon(docReq:DocumentRequest){
+        if(docReq.fulfilled()){
+            return 'glyphicon-ok';
+        }else if (docReq.started()){
+            return 'glyphicon-floppy-disk';
+        }else {
+            return 'glyphicon-cloud-upload';
+        }
+    }
+
+    getPanelStyle(docReq:DocumentRequest){
+        if(docReq.fulfilled()){
+            return 'panel-success';
+        }else if (docReq.started()){
+            return 'panel-warning';
+        }else {
+            return 'panel-primary';
         }
     }
 

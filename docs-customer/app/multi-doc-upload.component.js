@@ -67,26 +67,6 @@ var MultiDocUploadComponent = (function () {
         var id = this.application.id;
         return this.applicationService.markAsDone(this.application, docRecTypeName)
             .subscribe(function (documentRequest) { return _this.receiveDocumentRequest(documentRequest); }, function (error) { return _this.handleError(error); });
-        //
-        // console.log('linkDoc');
-        // var id = this.application.id;
-        // console.log('linkDoc id: ' + id );
-        // var url = 'http://docs2.sprinthive.tech:8080/io/markDocReqAsComplete/' + id+"/"+docRecTypeName;
-        // var xhttp = new XMLHttpRequest();
-        // xhttp.onreadystatechange = function () {
-        //     if (xhttp.readyState == 4 && xhttp.status == 200) {
-        //         // var text = xhttp.responseText;
-        //         // console.log('Request responseText: ' + text);
-        //         // let documentRequest = JSON.parse(text);
-        //         // documentRequest.fulfilled = this.documentRequest.fulfilled;
-        //         // documentRequest.started = this.documentRequest.started;
-        //         // this.documentRequest = documentRequest;
-        //         location.reload();
-        //         // this.clearStatus();
-        //     }
-        // };
-        // xhttp.open("GET", url, true);
-        // xhttp.send();
     };
     MultiDocUploadComponent.prototype.receiveDocumentRequest = function (documentRequest) {
         console.log('receiveDocumentRequest');
@@ -102,6 +82,28 @@ var MultiDocUploadComponent = (function () {
     };
     MultiDocUploadComponent.prototype.showDone = function () {
         return this.documentRequest.status !== "COMPLETE";
+    };
+    MultiDocUploadComponent.prototype.getGlyphicon = function (docReq) {
+        if (docReq.fulfilled()) {
+            return 'glyphicon-ok';
+        }
+        else if (docReq.started()) {
+            return 'glyphicon-floppy-disk';
+        }
+        else {
+            return 'glyphicon-cloud-upload';
+        }
+    };
+    MultiDocUploadComponent.prototype.getPanelStyle = function (docReq) {
+        if (docReq.fulfilled()) {
+            return 'panel-success';
+        }
+        else if (docReq.started()) {
+            return 'panel-warning';
+        }
+        else {
+            return 'panel-primary';
+        }
     };
     __decorate([
         core_1.Input(), 

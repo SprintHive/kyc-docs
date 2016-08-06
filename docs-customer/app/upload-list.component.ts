@@ -58,7 +58,7 @@ export class UploadListComponent implements OnInit {
         }
         let name = this.application.customerName;
         this.mainMessage = 'Hi '+ name+', you have provided '+noCompleted+' of '+ length+' documents.';
-        this.secondaryMessage = 'You can take a picture or upload an file.';
+        this.secondaryMessage = 'You can take a picture or upload a file.';
     }
 
     private handleError(error:any) {

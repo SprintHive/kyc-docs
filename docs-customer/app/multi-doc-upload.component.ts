@@ -76,27 +76,7 @@ export class MultiDocUploadComponent implements OnInit {
         return this.applicationService.markAsDone(this.application, docRecTypeName)
             .subscribe(
                 documentRequest => this.receiveDocumentRequest(documentRequest),
-                           error => this.handleError(<any>error));
-        //
-        // console.log('linkDoc');
-        // var id = this.application.id;
-        // console.log('linkDoc id: ' + id );
-        // var url = 'http://docs2.sprinthive.tech:8080/io/markDocReqAsComplete/' + id+"/"+docRecTypeName;
-        // var xhttp = new XMLHttpRequest();
-        // xhttp.onreadystatechange = function () {
-        //     if (xhttp.readyState == 4 && xhttp.status == 200) {
-        //         // var text = xhttp.responseText;
-        //         // console.log('Request responseText: ' + text);
-        //         // let documentRequest = JSON.parse(text);
-        //         // documentRequest.fulfilled = this.documentRequest.fulfilled;
-        //         // documentRequest.started = this.documentRequest.started;
-        //         // this.documentRequest = documentRequest;
-        //         location.reload();
-        //         // this.clearStatus();
-        //     }
-        // };
-        // xhttp.open("GET", url, true);
-        // xhttp.send();
+                error => this.handleError(<any>error));
     }
 
     private receiveDocumentRequest(documentRequest:DocumentRequest) {
@@ -109,11 +89,32 @@ export class MultiDocUploadComponent implements OnInit {
         return documentRequest;
     }
 
+    
     private handleError(error:string) {
         this.statusMessage = error;
     }
 
     showDone():boolean {
         return this.documentRequest.status !== "COMPLETE"
+    }
+
+    getGlyphicon(docReq:DocumentRequest){
+        if(docReq.fulfilled()){
+            return 'glyphicon-ok';
+        }else if (docReq.started()){
+            return 'glyphicon-floppy-disk';
+        }else {
+            return 'glyphicon-cloud-upload';
+        }
+    }
+
+    getPanelStyle(docReq:DocumentRequest){
+        if(docReq.fulfilled()){
+            return 'panel-success';
+        }else if (docReq.started()){
+            return 'panel-warning';
+        }else {
+            return 'panel-primary';
+        }
     }
 }

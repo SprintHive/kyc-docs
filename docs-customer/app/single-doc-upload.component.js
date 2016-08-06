@@ -32,21 +32,26 @@ var SingleDocUploadComponent = (function () {
         this.setStatus();
     };
     SingleDocUploadComponent.prototype.setStatus = function () {
-        if (this.documentRequest.fulfilled()) {
-            if (this.documentRequest.scannedBarcode != null) {
-                this.statusMessage = "Found: " + this.documentRequest.scannedBarcode;
-            }
-            else {
-                if (this.documentRequest.documentType.barcodeScan) {
-                    this.statusMessage = "No barcode found in image.";
+        if (this.documentRequest.documentType.singlePage) {
+            if (this.documentRequest.fulfilled()) {
+                if (this.documentRequest.scannedBarcode != null) {
+                    this.statusMessage = "Found: " + this.documentRequest.scannedBarcode;
                 }
                 else {
-                    this.statusMessage = "Document uploaded.";
+                    if (this.documentRequest.documentType.barcodeScan) {
+                        this.statusMessage = "No barcode found in image.";
+                    }
+                    else {
+                        this.statusMessage = "Document uploaded.";
+                    }
                 }
+            }
+            else {
+                this.statusMessage = "Please provide your " + this.documentRequest.documentType.title;
             }
         }
         else {
-            this.statusMessage = "Please provide your " + this.documentRequest.documentType.title;
+            this.statusMessage = this.documentRequest.documents.length + " documents uploaded.";
         }
     };
     SingleDocUploadComponent.prototype.clearStatus = function () {
@@ -57,6 +62,18 @@ var SingleDocUploadComponent = (function () {
     };
     SingleDocUploadComponent.prototype.handleUpload = function (data) {
         var _this = this;
+        this.documentRequest.status = 'BUSY';
+        // for (var i = 0; i < this.application.documentRequests.length; i++) {
+        //     if(this.documentRequest.documentType.name === this.application.documentRequests[i].documentType.name){
+        //         this.application.documentRequests[i].status = 'BUSY';
+        //                 }
+        // }
+        for (var _i = 0, _a = this.application.documentRequests; _i < _a.length; _i++) {
+            var docRec = _a[_i];
+            if (this.documentRequest.documentType.name === docRec.documentType.name) {
+                docRec.status = 'BUSY';
+            }
+        }
         this.uploadFile = data;
         console.log(this.uploadFile);
         this.zone.run(function () {
@@ -73,6 +90,49 @@ var SingleDocUploadComponent = (function () {
             this.documentRequest = documentRequest;
             this.statusMessage = "Upload complete.";
             this.clearStatus();
+        }
+    };
+    SingleDocUploadComponent.prototype.markAsDone = function (docRecTypeName) {
+        var _this = this;
+        var id = this.application.id;
+        return this.applicationService.markAsDone(this.application, docRecTypeName)
+            .subscribe(function (documentRequest) { return _this.receiveDocumentRequest(documentRequest); }, function (error) { return _this.handleError(error); });
+    };
+    SingleDocUploadComponent.prototype.receiveDocumentRequest = function (documentRequest) {
+        console.log('receiveDocumentRequest');
+        console.log(documentRequest);
+        documentRequest.fulfilled = this.documentRequest.fulfilled;
+        documentRequest.started = this.documentRequest.started;
+        this.documentRequest = documentRequest;
+        // location.reload();
+        return documentRequest;
+    };
+    SingleDocUploadComponent.prototype.handleError = function (error) {
+        this.statusMessage = error;
+    };
+    SingleDocUploadComponent.prototype.showDone = function () {
+        return this.documentRequest.status !== "COMPLETE";
+    };
+    SingleDocUploadComponent.prototype.getGlyphicon = function (docReq) {
+        if (docReq.fulfilled()) {
+            return 'glyphicon-ok';
+        }
+        else if (docReq.started()) {
+            return 'glyphicon-floppy-disk';
+        }
+        else {
+            return 'glyphicon-cloud-upload';
+        }
+    };
+    SingleDocUploadComponent.prototype.getPanelStyle = function (docReq) {
+        if (docReq.fulfilled()) {
+            return 'panel-success';
+        }
+        else if (docReq.started()) {
+            return 'panel-warning';
+        }
+        else {
+            return 'panel-primary';
         }
     };
     __decorate([

@@ -53,7 +53,7 @@ var UploadListComponent = (function () {
         }
         var name = this.application.customerName;
         this.mainMessage = 'Hi ' + name + ', you have provided ' + noCompleted + ' of ' + length + ' documents.';
-        this.secondaryMessage = 'You can take a picture or upload an file.';
+        this.secondaryMessage = 'You can take a picture or upload a file.';
     };
     UploadListComponent.prototype.handleError = function (error) {
         this.mainMessage = 'Problems loading your application status';

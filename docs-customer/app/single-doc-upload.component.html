@@ -1,21 +1,32 @@
-<div class="left" style="width: 80%">
-    <div *ngIf="uploadFile">
-        <div class="progress" style="margin-bottom: 0">
-            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploadProgress + '%' }">{{ uploadProgress }}%</div>
-            <div class="label">{{ uploadProgress }}%</div>
+<div class="panel {{getPanelStyle(documentRequest)}}">
+    <div class="panel-heading">
+        <span class="glyphicon left {{documentRequest.documentType.glyphicon}}" aria-hidden="true"></span>
+        {{documentRequest.documentType.title}}
+        <span class="glyphicon right {{getGlyphicon(documentRequest)}}" aria-hidden="true"></span>
+    </div>
+    <div class="panel-body">
+        <div class="left" style="width: 80%">
+            <div *ngIf="uploadFile">
+                <div class="progress" style="margin-bottom: 0">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploadProgress + '%' }">{{
+                        uploadProgress }}%
+                    </div>
+                    <div class="label">{{ uploadProgress }}%</div>
+                </div>
+            </div>
+            <span class="status-message">{{statusMessage}}</span>
+        </div>
+        <div class="right">
+            <input type="file"
+                   capture="camera"
+                   id="file-pb-{{documentRequest.documentType.name}}"
+                   style="display:none;"
+                   [ng-file-select]="options"
+                   (onUpload)="handleUpload($event)">
+            <label attr.for="file-pb-{{documentRequest.documentType.name}}" class="btn btn-lg upload-btn upload-button">
+                <span class="glyphicon glyphicon-plus"></span>
+            </label>
         </div>
     </div>
-    <span class="status-message">{{statusMessage}}</span>
-</div>
-<div class="right">
-    <input type="file"
-           capture="camera"
-           id="file-pb-{{documentRequest.documentType.name}}"
-           style="display:none;"
-           [ng-file-select]="options"
-           (onUpload)="handleUpload($event)">
-    <label attr.for="file-pb-{{documentRequest.documentType.name}}"  class="btn btn-lg upload-btn upload-button">
-        <span class="glyphicon glyphicon-plus"></span>
-      </label>
 </div>
 

@@ -13,16 +13,7 @@
                 </div>
                 <br/>
                 <div *ngIf="application">
-                    <div *ngFor="let docReq of application.documentRequests" class="panel {{getButtonStyle(docReq)}} ">
-                        <div class="panel-heading">
-                            <span class="glyphicon left {{docReq.documentType.glyphicon}}" aria-hidden="true"></span>
-                            {{docReq.documentType.title}}
-                            <span class="glyphicon right {{getGlyphicon(docReq)}}" aria-hidden="true"></span>
-                        </div>
-                        <div class="panel-body">
-                            <upload-selector [documentRequest]="docReq" [application]="application"></upload-selector>
-                        </div>
-                    </div>
+                    <upload-selector *ngFor="let docReq of application.documentRequests"  [documentRequest]="docReq" [application]="application"></upload-selector>
                 </div>
             </div>
         </div>
