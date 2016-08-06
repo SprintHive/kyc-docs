@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f32aadcf-2e27-441f-8f64-5807c7281012" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../docs-server/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/single-doc-upload.component.js" afterPath="$PROJECT_DIR$/app/single-doc-upload.component.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/single-doc-upload.component.js.map" afterPath="$PROJECT_DIR$/app/single-doc-upload.component.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/single-doc-upload.component.ts" afterPath="$PROJECT_DIR$/app/single-doc-upload.component.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../docs-server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../docs-server/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/upload-list.component.html" afterPath="$PROJECT_DIR$/app/upload-list.component.html" />
     </list>
     <ignored path="mrdyou-customer.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -112,11 +108,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="upload-list.component.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="upload-list.component.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/upload-list.component.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="25" />
+            <state relative-caret-position="315">
+              <caret line="21" column="37" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -146,7 +142,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="single-doc-upload.component.ts" pinned="false" current-in-tab="true">
+      <file leaf-file-name="single-doc-upload.component.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/single-doc-upload.component.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="231">
@@ -240,10 +236,10 @@
         <option value="$PROJECT_DIR$/app/application.service.ts" />
         <option value="$PROJECT_DIR$/app/single-doc-upload.component.html" />
         <option value="$PROJECT_DIR$/app/upload-list.component.ts" />
-        <option value="$PROJECT_DIR$/app/upload-list.component.html" />
         <option value="$PROJECT_DIR$/app/multi-doc-upload.component.html" />
         <option value="$PROJECT_DIR$/app/multi-doc-upload.component.ts" />
         <option value="$PROJECT_DIR$/app/single-doc-upload.component.ts" />
+        <option value="$PROJECT_DIR$/app/upload-list.component.html" />
       </list>
     </option>
   </component>
@@ -679,7 +675,7 @@
       <workItem from="1469787445781" duration="23000" />
       <workItem from="1469787520026" duration="19000" />
       <workItem from="1469787596377" duration="56304000" />
-      <workItem from="1470379194124" duration="17348000" />
+      <workItem from="1470379194124" duration="18521000" />
     </task>
     <task id="LOCAL-00001" summary="Moved display logic into child components">
       <created>1470471016351</created>
@@ -688,11 +684,18 @@
       <option name="project" value="LOCAL" />
       <updated>1470471016351</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="removed unnesasary Doc Req loop update on app">
+      <created>1470471939424</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1470471939424</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134764000" />
+    <option name="totallyTimeSpent" value="135937000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1922" y="-430" width="1598" height="1177" extended-state="6" />
@@ -765,7 +768,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Moved display logic into child components" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moved display logic into child components" />
+    <MESSAGE value="removed unnesasary Doc Req loop update on app" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed unnesasary Doc Req loop update on app" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -885,6 +889,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="456">
           <caret line="73" column="27" selection-start-line="73" selection-start-column="27" selection-end-line="73" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -958,14 +963,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/upload-selector.component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/upload-list.component.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -1018,14 +1015,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/upload-list.component.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="16" selection-start-line="1" selection-start-column="16" selection-end-line="1" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/single-doc-upload.component.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -1033,6 +1022,22 @@
           <folding>
             <element signature="e#0#63#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/upload-selector.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/upload-list.component.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="37" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
