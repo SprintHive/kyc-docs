@@ -16,13 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
-import za.co.leroux.kyc.docs.dao.ApplicationDAO;
-import za.co.leroux.kyc.docs.exception.ResourceNotFoundException;
 import za.co.leroux.kyc.docs.model.Application;
 import za.co.leroux.kyc.docs.model.DocumentRequest;
 import za.co.leroux.kyc.docs.service.KycDocsService;
@@ -39,13 +33,7 @@ public class KyCDocsRestService {
 
     private static final Logger log = LoggerFactory.getLogger(KyCDocsRestService.class);
 
-    public static final String ROOT = "upload-dir";
-
     private final ResourceLoader resourceLoader;
-
-    @Autowired
-    private ApplicationDAO applicationDAO;
-
 
     @Autowired
     private KycDocsService kycDocsService;
@@ -59,32 +47,15 @@ public class KyCDocsRestService {
     public DocumentRequest handleFileUpload(@PathVariable String applicationId, @PathVariable String docRecTypeName, @RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
-        if (!file.isEmpty()) {
-            try {
-                String fileName = applicationId + '-' +docRecTypeName + '-' +file.getOriginalFilename();
-                redirectAttributes.addFlashAttribute("fileName", fileName);
-                Path target = Paths.get(ROOT, fileName);
-                System.out.println("target = " + target);
-                Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
-                String message = "You successfully uploaded " + file.getOriginalFilename() + "!";
-                redirectAttributes.addFlashAttribute("message",
-                        message);
-                DocumentRequest dr = kycDocsService.linkDocument(applicationId, docRecTypeName, fileName);
-                return dr;
-            } catch (IOException | RuntimeException e) {
-                e.printStackTrace();
-                String message = "Failed to upload " + file.getOriginalFilename() + " => " + e.getMessage();
-                redirectAttributes.addFlashAttribute("message", message);
-                return null;
-            }
-        } else {
-            String message = "Failed to upload " + file.getOriginalFilename() + " because it was empty";
-            redirectAttributes.addFlashAttribute("message", message);
-            return null;
+        try {
+            System.out.println("KyCDocsRestService.handleFileUpload");
+            return kycDocsService.uploadFile(applicationId, docRecTypeName, file, redirectAttributes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
     }
 
-    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET, value = "/io/markDocReqAsComplete/{applicationId}/{docRecTypeName}")
     public DocumentRequest markDocReqAsComplete(@PathVariable String applicationId, @PathVariable String docRecTypeName) {
         System.out.println("KyCDocsRestService.markDocReqAsComplete");
@@ -94,16 +65,13 @@ public class KyCDocsRestService {
 
     @RequestMapping("/io/application/{applicationId}")
     public Application getApplication(@PathVariable String applicationId) {
-        Application application = applicationDAO.findOne(applicationId);
-        if (application == null) {
-            throw new ResourceNotFoundException("No application found for applicationId: " + applicationId);
-        }
-        DocumentRequest dr = new DocumentRequest();
-        return application;
+        System.out.println("KyCDocsRestService.getApplication");
+        return kycDocsService.getApplication(applicationId);
     }
 
     @RequestMapping("/io/ping")
     public String ping() {
+        System.out.println("KyCDocsRestService.ping");
         return "ping";
     }
 

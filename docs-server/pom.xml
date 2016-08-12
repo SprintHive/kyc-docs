@@ -5,7 +5,7 @@
 
     <groupId>org.springframework</groupId>
     <artifactId>kyc-docs-server</artifactId>
-    <version>0.1.0</version>
+    <version>0.0.2</version>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -47,6 +47,12 @@
         <groupId>com.aspose</groupId>
         <artifactId>aspose-barcode</artifactId>
         <version>7.9.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
         </dependency>
     </dependencies>
 
