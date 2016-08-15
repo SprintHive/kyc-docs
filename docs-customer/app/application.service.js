@@ -14,8 +14,8 @@ var http_1 = require('@angular/http');
 var ApplicationService = (function () {
     function ApplicationService(http) {
         this.http = http;
-        this.getApplicationUrl = 'http://docs2.sprinthive.tech:8080/io/application/'; // URL to web API
-        this.markDocReqAsCompleteUrl = 'http://docs2.sprinthive.tech:8080/io/markDocReqAsComplete/'; // URL to web API
+        this.getApplicationUrl = 'http://192.168.1.117:8080/io/application/'; // URL to web API
+        this.markDocReqAsCompleteUrl = 'http://192.168.1.117:8080/io/markDocReqAsComplete/'; // URL to web API
     }
     ApplicationService.prototype.getApplication = function (applicationId) {
         var url = this.getApplicationUrl + applicationId;

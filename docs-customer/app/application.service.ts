@@ -5,8 +5,8 @@ import {Http, Response} from '@angular/http';
 
 @Injectable()
 export class ApplicationService {
-    private getApplicationUrl =       'http://docs2.sprinthive.tech:8080/io/application/';  // URL to web API
-    private markDocReqAsCompleteUrl =    'http://docs2.sprinthive.tech:8080/io/markDocReqAsComplete/';  // URL to web API
+    private getApplicationUrl =       'http://192.168.1.117:8080/io/application/';  // URL to web API
+    private markDocReqAsCompleteUrl =    'http://192.168.1.117:8080/io/markDocReqAsComplete/';  // URL to web API
 
     constructor(private http:Http) {
     }

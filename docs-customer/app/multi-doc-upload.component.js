@@ -13,7 +13,7 @@ var model_1 = require("./model");
 var application_service_1 = require("./application.service");
 var router_deprecated_1 = require("@angular/router-deprecated");
 var ng2_uploader_1 = require("ng2-uploader/ng2-uploader");
-var http_1 = require('@angular/http');
+var http_1 = require("@angular/http");
 var MultiDocUploadComponent = (function () {
     function MultiDocUploadComponent(applicationService, router, http) {
         this.applicationService = applicationService;
@@ -21,15 +21,15 @@ var MultiDocUploadComponent = (function () {
         this.http = http;
         this.refreshing = false;
         this.requesting = false;
+        this.uploadProgresses = [];
         this.application = new model_1.Application;
-        this.uploadProgress = 0;
         this.statusMessage = '';
         this.zone = new core_1.NgZone({ enableLongStackTrace: false });
     }
     MultiDocUploadComponent.prototype.ngOnInit = function () {
         console.log(this.documentRequest);
         this.options = {
-            url: 'http://docs2.sprinthive.tech:8080/io/upload/' + this.application.id + '/' + this.documentRequest.documentType.name + '/'
+            url: 'http://192.168.1.117:8080/io/upload/' + this.application.id + '/' + this.documentRequest.documentType.name + '/'
         };
         this.setStatus();
     };
@@ -37,30 +37,34 @@ var MultiDocUploadComponent = (function () {
         this.statusMessage = this.documentRequest.documents.length + " documents uploaded.";
     };
     MultiDocUploadComponent.prototype.clearStatus = function () {
-        this.uploadProgress = 0;
-        this.uploadFile = null;
         this.setStatus();
         console.log('clearStatus2');
     };
     MultiDocUploadComponent.prototype.handleUpload = function (data) {
         var _this = this;
-        this.uploadFile = data;
-        console.log(this.uploadFile);
-        this.zone.run(function () {
-            _this.uploadProgress = data.progress.percent;
-            console.log('uploadProgress:' + _this.uploadProgress);
-        });
-        console.log('data');
-        console.log(data);
+        var id = data.id;
+        var index = this.findIndex(id);
+        if (index === -1) {
+            index = this.uploadProgresses.push({ id: id, percent: 0 });
+        }
+        if (this.uploadProgresses[index]) {
+            this.zone.run(function () {
+                _this.uploadProgresses[index].percent = data.progress.percent;
+            });
+        }
         if (data.status == 200) {
-            console.log('in if');
             var documentRequest = JSON.parse(data.response);
             documentRequest.fulfilled = this.documentRequest.fulfilled;
             documentRequest.started = this.documentRequest.started;
             this.documentRequest = documentRequest;
-            this.statusMessage = "Upload complete.";
-            this.clearStatus();
+            this.setStatus();
+            if (index > -1) {
+                this.uploadProgresses.splice(index, 1);
+            }
         }
+    };
+    MultiDocUploadComponent.prototype.findIndex = function (id) {
+        return this.uploadProgresses.findIndex(function (x) { return x.id === id; });
     };
     MultiDocUploadComponent.prototype.markAsDone = function (docRecTypeName) {
         var _this = this;

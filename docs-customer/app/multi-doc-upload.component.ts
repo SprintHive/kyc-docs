@@ -3,8 +3,7 @@ import {Application, DocumentRequest} from "./model";
 import {ApplicationService} from "./application.service";
 import {Router} from "@angular/router-deprecated";
 import {UPLOAD_DIRECTIVES} from "ng2-uploader/ng2-uploader";
-import {Observable} from 'rxjs/Rx';
-import {Http, Response} from '@angular/http';
+import {Http} from "@angular/http";
 
 @Component({
     selector: 'multi-doc-upload',
@@ -13,20 +12,18 @@ import {Http, Response} from '@angular/http';
 })
 export class MultiDocUploadComponent implements OnInit {
     @Input()
-    documentRequest:DocumentRequest;
+    documentRequest: DocumentRequest;
     @Input()
-    application:Application;
-    statusMessage:string;
+    application: Application;
+    statusMessage: string;
     refreshing = false;
     requesting = false;
-    uploadFile:any;
-    uploadProgress:number;
-    zone:NgZone;
-    options:Object;
+    uploadProgresses: any[] = [];
+    zone: NgZone;
+    options: Object;
 
-    constructor(private applicationService:ApplicationService, private router:Router, private http:Http) {
+    constructor(private applicationService: ApplicationService, private router: Router, private http: Http) {
         this.application = new Application;
-        this.uploadProgress = 0;
         this.statusMessage = '';
         this.zone = new NgZone({enableLongStackTrace: false});
 
@@ -35,7 +32,7 @@ export class MultiDocUploadComponent implements OnInit {
     ngOnInit() {
         console.log(this.documentRequest);
         this.options = {
-            url: 'http://docs2.sprinthive.tech:8080/io/upload/' + this.application.id + '/' + this.documentRequest.documentType.name + '/'
+            url: 'http://192.168.1.117:8080/io/upload/' + this.application.id + '/' + this.documentRequest.documentType.name + '/'
         };
         this.setStatus();
     }
@@ -45,32 +42,38 @@ export class MultiDocUploadComponent implements OnInit {
     }
 
     clearStatus() {
-        this.uploadProgress = 0;
-        this.uploadFile = null;
         this.setStatus();
         console.log('clearStatus2');
     }
 
-    handleUpload(data:any):void {
-        this.uploadFile = data;
-        console.log(this.uploadFile)
-        this.zone.run(() => {
-            this.uploadProgress = data.progress.percent;
-            console.log('uploadProgress:' + this.uploadProgress)
-        });
-        console.log('data');
-        console.log(data);
-        if(data.status == 200){
-            console.log('in if');
+    handleUpload(data: any): void {
+        let id = data.id;
+        let index = this.findIndex(id);
+        if (index === -1) {
+            index = this.uploadProgresses.push({id: id, percent: 0});
+        }
+        if (this.uploadProgresses[index]) {
+            this.zone.run(() => {
+                this.uploadProgresses[index].percent = data.progress.percent;
+            });
+        }
+        if (data.status == 200) {
             let documentRequest = JSON.parse(data.response);
             documentRequest.fulfilled = this.documentRequest.fulfilled;
             documentRequest.started = this.documentRequest.started;
             this.documentRequest = documentRequest;
-            this.statusMessage = "Upload complete."
-            this.clearStatus();
+            this.setStatus();
+            if (index > -1) {
+                this.uploadProgresses.splice(index, 1);
+            }
         }
     }
-    
+
+    findIndex(id: string): number {
+        return this.uploadProgresses.findIndex(x => x.id === id);
+    }
+
+
     markAsDone(docRecTypeName: string) {
         var id = this.application.id;
         return this.applicationService.markAsDone(this.application, docRecTypeName)
@@ -79,7 +82,7 @@ export class MultiDocUploadComponent implements OnInit {
                 error => this.handleError(<any>error));
     }
 
-    private receiveDocumentRequest(documentRequest:DocumentRequest) {
+    private receiveDocumentRequest(documentRequest: DocumentRequest) {
         console.log('receiveDocumentRequest');
         console.log(documentRequest);
         documentRequest.fulfilled = this.documentRequest.fulfilled;
@@ -89,31 +92,31 @@ export class MultiDocUploadComponent implements OnInit {
         return documentRequest;
     }
 
-    
-    private handleError(error:string) {
+
+    private handleError(error: string) {
         this.statusMessage = error;
     }
 
-    showDone():boolean {
+    showDone(): boolean {
         return this.documentRequest.status !== "COMPLETE"
     }
 
-    getGlyphicon(docReq:DocumentRequest){
-        if(docReq.fulfilled()){
+    getGlyphicon(docReq: DocumentRequest) {
+        if (docReq.fulfilled()) {
             return 'glyphicon-ok';
-        }else if (docReq.started()){
+        } else if (docReq.started()) {
             return 'glyphicon-floppy-disk';
-        }else {
+        } else {
             return 'glyphicon-cloud-upload';
         }
     }
 
-    getPanelStyle(docReq:DocumentRequest){
-        if(docReq.fulfilled()){
+    getPanelStyle(docReq: DocumentRequest) {
+        if (docReq.fulfilled()) {
             return 'panel-success';
-        }else if (docReq.started()){
+        } else if (docReq.started()) {
             return 'panel-warning';
-        }else {
+        } else {
             return 'panel-primary';
         }
     }

@@ -6,13 +6,11 @@
     </div>
     <div class="panel-body">
         <div class="left" style="width: 80%">
-            <div *ngIf="uploadFile">
+            <div *ngFor="#progressObj of uploadProgresses">
                 <div class="progress" style="margin-bottom: 0">
-                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploadProgress + '%' }">{{
-                        uploadProgress
-                        }}%
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': progressObj.percent  + '%' }">{{
+                        progressObj.percent }}%
                     </div>
-                    <div class="label">{{ uploadProgress }}%</div>
                 </div>
             </div>
             <span class="status-message">{{statusMessage}}</span>
@@ -23,7 +21,8 @@
                    id="file-pb-{{documentRequest.documentType.name}}"
                    style="display:none;"
                    [ng-file-select]="options"
-                   (onUpload)="handleUpload($event)">
+                   (onUpload)="handleUpload($event)"
+                   multiple>
             <label attr.for="file-pb-{{documentRequest.documentType.name}}" class="btn btn-lg upload-btn upload-button">
                 <span class="glyphicon glyphicon-plus"></span>
             </label>
